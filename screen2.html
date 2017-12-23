@@ -1,0 +1,230 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <script src="assets/js/jquery-1.11.1.min.js"></script>
+
+    <title>FunFlight</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <style>
+        body {
+            padding-top: 5rem;
+        }
+
+        .starter-template {
+            padding: 3rem 1.5rem;
+            text-align: center;
+        }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            console.log("ready!");
+        });
+        var users = {};
+        var startCountDown = function () {
+            var countDownDate = new Date().getTime() + 10000;
+
+            // Set the date we're counting down to
+            // Update the count down every 1 second
+            var x = setInterval(function () {
+
+                // Get todays date and time
+                var now = new Date().getTime();
+
+                // Find the distance between now an the count down date
+                var distance = countDownDate - now;
+                console.log("dis:", distance);
+
+                // Time calculations for days, hours, minutes and seconds
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Display the result in the element with id="demo"
+                document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+
+                // If the count down is finished, write some text 
+
+                if (distance <= 2000) {
+                    clearInterval(x);
+                    socket.emit('start', true);
+                    console.log("AAAAAAAA");
+                    $('#container').show();
+                    $('#container2').show();
+                }
+            }, 1000);
+        }
+        var questionCountDown2 = function () {
+            var countDownDate = new Date().getTime() + 10000;
+
+            // Set the date we're counting down to
+            // Update the count down every 1 second
+            var x = setInterval(function () {
+
+                // Get todays date and time
+                var now = new Date().getTime();
+
+                // Find the distance between now an the count down date
+                var distance = countDownDate - now;
+                console.log("dis:", distance);
+
+                // Time calculations for days, hours, minutes and seconds
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Display the result in the element with id="demo"
+                document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+
+                // If the count down is finished, write some text 
+                if (distance < 2) {
+                    clearInterval(x);
+                    $('#container').hide();
+
+                    socket.emit('result', true);
+
+                }
+            }, 1000);
+        }
+        var resultCountDown3 = function () {
+            var countDownDate = new Date().getTime() + 5000;
+            console.log("count: ", countDownDate);
+            // Set the date we're counting down to
+            // Update the count down every 1 second
+            var x = setInterval(function () {
+
+                // Get todays date and time
+                var now = new Date().getTime();
+
+                // Find the distance between now an the count down date
+                var distance = countDownDate - now;
+                console.log("dis:", distance);
+
+                // Time calculations for days, hours, minutes and seconds
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // Display the result in the element with id="demo"
+                document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+
+                // If the count down is finished, write some text 
+                console.log("countDownDate: ", countDownDate);
+                // alert(distance);
+                if (distance < 1) {
+                    clearInterval(x);
+                    $('#result-container').hide();
+                    console.log("question çağrıldı");
+                    socket.emit('start', true);
+
+                    $('.answerClass').css('color', 'black');
+
+                    $('#container').show();
+                }
+            }, 1000);
+        }
+        var socket = io.connect();
+        startCountDown();
+
+
+        socket.on('question', function (data) {
+            $('#question').html(data.question);
+
+            $('#answer1').html(data.answers[0]);
+            $('#answer2').html(data.answers[0]);
+            $('#answer3').html(data.answers[0]);
+            $('#answer4').html(data.answers[0]);
+
+            console.log("soru:", data);
+            questionCountDown2();
+        });
+
+        socket.on('results', function (data) {
+            console.log("kadir reis");
+            $('#answer' + (data.correctAnswer + 1) + '' + (data.correctAnswer + 1)).css('color', 'green');
+            $('#answer11').html(data.answersCount[0].length);
+            $('#answer22').html(data.answersCount[1].length);
+            $('#answer33').html(data.answersCount[2].length);
+            $('#answer44').html(data.answersCount[3].length);
+            $('#result-container').show();
+            resultCountDown3();
+
+        })
+
+        //user bilgilerini oyun sonunda alıyoruz, listelicez
+        socket.on('finish', function (data) {
+            console.log("User data: ", data);
+            for (i = 0; i < data.length; i++) {
+                $('#username').html(data.score);
+            }
+        })
+    </script>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+        <a class="navbar-brand" href="#" style="text-align:center; color:orange">FunFlight</a>
+    </nav>
+
+    <!-- <div class="container">
+
+        <div class="starter-template">
+            <h1>Bootstrap starter template</h1>
+            <p class="lead">Use this document as a way to quickly start any new project.
+                <br> All you get is this text and a mostly barebones HTML document.</p>
+        </div>
+
+    </div> -->
+
+    <div class="row">
+        <div class="col-md-12" style="border:1px solid red;">
+            <p id="demo"></p>
+
+            <div id="container" style="display:none; height:150px; width:auto;">
+                <h4 id="question">Lorem ipsum dolor sit amet.</h4>
+            </div>
+        </div>
+
+        <div id="container2" class="col-md-12" style="display:none;border:1px solid orange;width:auto;">
+            <div class="row">
+                <h4 id="answer1" style="font-size:14px;" class="col flex-last">A- Sample Answer</h4>
+                <h4 id="answer2" style="font-size:14px;" class="col flex-last">B- Sample Answer</h4>
+            </div>
+            <div class="row">
+                <h4 id="answer3" style="font-size:14px;" class="col flex-last">C- Sample Answer</h4>
+                <h4 id="answer4" style="font-size:14px;" class="col flex-last">D- Sample Answer</h4>
+            </div>
+
+        </div>
+        <div class="container col-md-12" id="result-container" style="border:1px solid blue;display: none;">
+
+            <h2 class="answerClass" id="answer11">A- Sample Answer</h2>
+            <h2 class="answerClass" id="answer22">B- Sample Answer</h2>
+            <h2 class="answerClass" id="answer33">C- Sample Answer</h2>
+            <h2 class="answerClass" id="answer44">D- Sample Answer</h2>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+          ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+        crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+        crossorigin="anonymous"></script>
+    <script src="https://v4-alpha.getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
+</body>
+
+</html>

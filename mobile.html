@@ -1,0 +1,279 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../../../favicon.ico">
+
+    <title>Sticky Footer Navbar Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://getbootstrap.com/docs/4.0/examples/sticky-footer-navbar/sticky-footer-navbar.css" rel="stylesheet">
+
+    <style>
+        /* Absolute Center Spinner */
+
+        .loading {
+            position: fixed;
+            z-index: 999;
+            height: 2em;
+            width: 2em;
+            overflow: show;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+        /* Transparent Overlay */
+
+        .loading:before {
+            content: '';
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        /* :not(:required) hides these rules from IE9 and below */
+
+        .loading:not(:required) {
+            /* hide "loading..." text */
+            font: 0/0 a;
+            color: transparent;
+            text-shadow: none;
+            background-color: transparent;
+            border: 0;
+        }
+
+        .loading:not(:required):after {
+            content: '';
+            display: block;
+            font-size: 10px;
+            width: 1em;
+            height: 1em;
+            margin-top: -0.5em;
+            -webkit-animation: spinner 1500ms infinite linear;
+            -moz-animation: spinner 1500ms infinite linear;
+            -ms-animation: spinner 1500ms infinite linear;
+            -o-animation: spinner 1500ms infinite linear;
+            animation: spinner 1500ms infinite linear;
+            border-radius: 0.5em;
+            -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+            box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+        }
+
+        /* Animation */
+
+        @-webkit-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-moz-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-o-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="loading">Loading&#8230;</div>
+
+
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" href="#" style="margin-left:42%;">
+                <span id="question_number">1</span> of 5</a>
+        </nav>
+    </header>
+
+    <!-- Begin page content -->
+    <div class="container">
+        <div class="row" style="margin-top:7%;">
+            <div class="col flex-unordered">
+                <a href="#" onclick="theFunction('A')" style="cursor: pointer;">
+                    <img class="img-fluid" id="A" src="/assets/img/1.png" />
+                </a>
+            </div>
+            <div class="col flex-last">
+
+                <a href="#" onclick="theFunction('B')" style="cursor: pointer;">
+                    <img class="img-fluid" id="B" src="/assets/img/2.png" />
+                </a>
+            </div>
+
+        </div>
+        <div class="row" style="margin-top:3%;">
+            <div class="col flex-unordered">
+                <a href="#" onclick="theFunction('C')" style="cursor: pointer;">
+                    <img class="img-fluid" id="C" src="/assets/img/3.png" />
+                </a>
+            </div>
+            <div class="col flex-last">
+                <a href="#" onclick="theFunction('D')" style="cursor: pointer;">
+                    <img class="img-fluid" id="D" src="/assets/img/4.png" />
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <!-- <main role="main" class="container">
+
+    </main> -->
+
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted" style="float: right;">Score:
+                <span id="score">0</span>
+            </span>
+        </div>
+    </footer>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../../../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="https://getbootstrap.com/assets/js/vendor/popper.min.js"></script>
+    <script src="https://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+
+        var flag = true;
+        var hashtable = { 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
+        function theFunction(param) {
+
+            if (!flag) {
+                flag = true;
+                $('#' + param).attr('src', '/assets/img/' + param + '.png');
+
+                socket.emit('answer', {
+                    'answer': hashtable[param],
+                    'tck': tck
+                });
+
+            }
+
+
+            $('#buttons').hide();
+
+            // return true or false, depending on whether you want to allow the `href` property to follow through or not
+        }
+        var socket = io.connect();
+        var tck = Math.random();
+
+        if (1 == 1) { // to-do: login implement
+            socket.emit('login', tck);
+        }
+
+        socket.on('cannot_start', function (data) {
+            alert("Başlamış bir oyuna giremezsiniz!");
+        });
+
+        socket.on('score', function (data) {
+            $('#score').html(data);
+        });
+
+        socket.on('disconnect', function (data) {
+            socket.emit('disconnect', tck);
+        });
+
+        socket.on('results', function (data) {
+            flag = true;
+            socket.emit('send_score', tck);
+            $('#buttons').hide();
+        })
+
+        
+        socket.on('question', function (data) {
+            $('.loading').remove();
+            flag = false;
+            $('#A').attr('src', '/assets/img/1.png');
+            $('#B').attr('src', '/assets/img/2.png');
+            $('#C').attr('src', '/assets/img/3.png');
+            $('#D').attr('src', '/assets/img/4.png');
+            $('#question_number').html(data);
+            $('#buttons').show();
+        })
+
+
+    </script>
+</body>
+
+</html>
