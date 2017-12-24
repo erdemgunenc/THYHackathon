@@ -17,6 +17,9 @@
     <!-- Custom styles for this template -->
     <link href="https://getbootstrap.com/docs/4.0/examples/sticky-footer-navbar/sticky-footer-navbar.css" rel="stylesheet">
 
+    <script>
+        var name = "<%= info.name %>";
+    </script>
     <style>
         /* Absolute Center Spinner */
 
@@ -148,7 +151,6 @@
 
 <body>
 
-
     <div class="loading">Loading&#8230;</div>
 
 
@@ -196,7 +198,7 @@
 
     <footer class="footer">
         <div class="container">
-            <span class="text-muted" style="float: right;">Score:
+            <span style="float: right;">Score:
                 <span id="score">0</span>
             </span>
         </div>
@@ -216,6 +218,7 @@
     <script>
 
         var flag = true;
+        var flag2 = false;
         var hashtable = { 'A': 0, 'B': 1, 'C': 2, 'D': 3 };
         function theFunction(param) {
 
@@ -239,7 +242,16 @@
         var tck = Math.random();
 
         if (1 == 1) { // to-do: login implement
-            socket.emit('login', tck);
+            
+            var name = prompt("Enter your name");
+
+            if (name != null) {
+                socket.emit('login', {'pnr': tck, 'name': name});
+            }else{
+                var name = prompt("Enter your name");
+            }
+
+            
         }
 
         socket.on('cannot_start', function (data) {
@@ -247,7 +259,12 @@
         });
 
         socket.on('score', function (data) {
+            console.log("score: ", data);
             $('#score').html(data);
+            if(parseInt(data) > 15 && !flag2) {
+                alert("Tebrikler, cips + kola kazandınız =)))");
+                flag2 = true;
+            } 
         });
 
         socket.on('disconnect', function (data) {
@@ -260,8 +277,9 @@
             $('#buttons').hide();
         })
 
-        
+
         socket.on('question', function (data) {
+            console.log("question data: ", data);
             $('.loading').remove();
             flag = false;
             $('#A').attr('src', '/assets/img/1.png');

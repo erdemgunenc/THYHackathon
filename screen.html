@@ -18,9 +18,9 @@
         }
 
         #progressBar {
-            width: 90%;
+            width: 100%;
             margin: 10px auto;
-            height: 22px;
+            height: 50px;
             background-color: rgb(250, 250, 250);
         }
 
@@ -28,9 +28,10 @@
             height: 100%;
             text-align: right;
             padding: 0 10px;
-            line-height: 22px;
+            font-size: 40px;
+            line-height: 50px;
             /* same as #progressBar height if we want text middle aligned */
-            width: 0;
+            width: 50px;
             background-color: #CBEA00;
             box-sizing: border-box;
         }
@@ -122,13 +123,18 @@
 <body>
     <div class="container-fluid">
         <div class="alert alert-danger" role="alert">
-            <h1 class="alert-heading display-1 text-center">FunFlight</h1>
+            <h1 class="alert-heading display-1 text-center" style="color:rgb(94, 104, 5)">FunFlight</h1>
         </div>
 
         <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-                <h1 class="display-5" id="question">Lorem Ipsum, dizgi ve baskı endüstrisinde kullanılan mıgır metinlerdir. Lorem Ipsum, adı bilinmeyen bir matbaacının
-                    bir hurufat numune kitabı oluşturmak üzere bir yazı galerisini alarak karıştırdığı 1500'lerden</h1>
+            <div class="container text-center">
+                <h3 class="display-5" id="question">
+                    <p>http://bit.do/funflight adresine giriş yapın.</p>
+                    <p>
+                        <img src="http://chart.apis.google.com/chart?cht=qr&chs=400x400&choe=UTF-8&chld=H%7C0&chl=http://bit.do/funflight">
+                    </p>
+                    <p>Giriş yapanlar: </p>
+                </h3>
             </div>
 
             <div class="row" id="result-container" style="display: none;">
@@ -223,6 +229,9 @@
 
     </div>
 
+    <div class="text-center">
+        <span id="winner" style="font-size:70px;"></span>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
 
     <script>
@@ -272,7 +281,7 @@
         };
 
         var socket = io.connect();
-        startCountDown(10, 10, $('#progressBar'));
+        startCountDown(30, 30, $('#progressBar'));
 
         socket.on('question', function (data) {
             $('#container').show();
@@ -282,39 +291,61 @@
             $('#answer2').html(data.answers[1]);
             $('#answer3').html(data.answers[2]);
             $('#answer4').html(data.answers[3]);
-            questionCountDown(5, 5, $('#progressBar'));
+            questionCountDown(10, 10, $('#progressBar'));
+        });
+
+        socket.on('user_logged', function (data) {
+            $('#question').html($('#question').html() + data + '<br>');
         });
 
         socket.on('results', function (data) {
-            $('#answer' + (data.correctAnswer + 1) + '' + (data.correctAnswer + 1)).css('background', '#4ce210');
-            $('.skillsa').css('border', '5px solid white');
-            $('#answer' + (data.correctAnswer + 1) + '' + (data.correctAnswer + 1) + '' + (data.correctAnswer + 1)).css('border', '5px solid green');
-            var total = data.answersCount[0].length + data.answersCount[1].length + data.answersCount[2].length + data.answersCount[3].length;
-            if (data.answersCount[0].length * 100 / total > 0) {
-                if(data.correctAnswer + 1 != 1) $('#answer111').css('border', '5px solid red');
-                $('#answer11').css('height', data.answersCount[0].length * 100 / total + '%');
+            if (data.correctAnswer != -1) {
+
+                $('#answer' + (data.correctAnswer + 1) + '' + (data.correctAnswer + 1)).css('background', '#4ce210');
+                $('.skillsa').css('border', '5px solid white');
+                $('#answer' + (data.correctAnswer + 1) + '' + (data.correctAnswer + 1) + '' + (data.correctAnswer + 1)).css('border', '5px solid green');
+                var total = data.answersCount[0].length + data.answersCount[1].length + data.answersCount[2].length + data.answersCount[3].length;
+                if (data.answersCount[0].length * 100 / total > 0) {
+                    if (data.correctAnswer + 1 != 1) $('#answer111').css('border', '5px solid red');
+                    $('#answer11').css('height', data.answersCount[0].length * 100 / total + '%');
+                }
+                if (data.answersCount[1].length * 100 / total > 0) {
+                    if (data.correctAnswer + 1 != 2) $('#answer222').css('border', '5px solid red');
+                    $('#answer22').css('height', data.answersCount[1].length * 100 / total + '%');
+                }
+                if (data.answersCount[2].length * 100 / total > 0) {
+                    if (data.correctAnswer + 1 != 3) $('#answer333').css('border', '5px solid red');
+                    $('#answer33').css('height', data.answersCount[2].length * 100 / total + '%');
+                }
+                if (data.answersCount[3].length * 100 / total > 0) {
+                    if (data.correctAnswer + 1 != 4) $('#answer444').css('border', '5px solid red');
+                    $('#answer44').css('height', data.answersCount[3].length * 100 / total + '%');
+                }
+                $('#result-container').show();
+                resultCountDown(5, 5, $('#progressBar'));
             }
-            if (data.answersCount[1].length * 100 / total > 0) {
-                if(data.correctAnswer + 1 != 2) $('#answer222').css('border', '5px solid red');
-                $('#answer22').css('height', data.answersCount[1].length * 100 / total + '%');
+
+            else {
+                console.log("else data:", data);
+
+                $('#result-container').show();
+                resultCountDown(-1, 10, $('#progressBar'));
             }
-            if (data.answersCount[2].length * 100 / total > 0) {
-                if(data.correctAnswer + 1 != 3) $('#answer333').css('border', '5px solid red');
-                $('#answer33').css('height', data.answersCount[2].length * 100 / total + '%');
-            }
-            if (data.answersCount[3].length * 100 / total > 0) {
-                if(data.correctAnswer + 1 != 4) $('#answer444').css('border', '5px solid red');
-                $('#answer44').css('height', data.answersCount[3].length * 100 / total + '%');
-            }
-            $('#result-container').show();
-            resultCountDown(10, 10, $('#progressBar'));
         });
 
         //user bilgilerini oyun sonunda alıyoruz, listelicez
         socket.on('finish', function (data) {
-            for (i = 0; i < data.length; i++) {
-                $('#username').html(data.score);
+
+            var p = "";
+            for (var user in data.users) {
+                p += data.users[user].name + " : " + data.users[user].score + "<br>";
+
             }
+            $('#question').show();
+            $('#question').html(p);
+
+            $('#progressBar').hide();
+            $('#winner').html(data.users[0].name + " " + data.users[0].score * 10 + " mil kazandınız!");
         })
 
     </script>
